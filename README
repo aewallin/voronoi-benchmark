@@ -1,0 +1,15 @@
+Experimental benchmark of different voronoi diagram algorithms/implementations.
+- Boost.Polygon.Voronoi
+- CGAL
+- OpenVoronoi
+- Triangle? (Todo!)
+- QHull?    (Todo!)
+
+Out-of-source build with cmake:
+$ git clone git://github.com/aewallin/voronoi-benchmark.git
+$ cd voronoi-benchmark
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+

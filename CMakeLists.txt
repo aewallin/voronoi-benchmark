@@ -24,7 +24,7 @@ find_library(OVD_LIBRARY
             REQUIRED
 )
 include_directories( /usr/local/include/openvoronoi )
-
+MESSAGE(STATUS " OpenVoronoi found:  " ${OVD_LIBRARY})
 # for OpenVoronoi
 set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ) # Findqd.cmake is in this dir
 find_package( qd REQUIRED )

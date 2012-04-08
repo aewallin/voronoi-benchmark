@@ -147,8 +147,8 @@ int main() {
 
     bf << std::setiosflags(std::ios::right | std::ios::fixed) << std::setprecision(6);
     run_ovd_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
-    run_boost_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
-    run_cgal_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
+    //run_boost_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
+    //run_cgal_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
 
     bf.close();
     return 0;

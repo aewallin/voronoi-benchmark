@@ -1,9 +1,9 @@
 Experimental benchmark of different voronoi diagram algorithms/implementations.
-- Boost.Polygon.Voronoi
-- CGAL
-- OpenVoronoi
-- Triangle? (Todo!)
-- QHull?    (Todo!)
+- Boost.Polygon.Voronoi   http://svn.boost.org/svn/boost/sandbox/gtl/doc/index.htm
+- CGAL                    http://www.cgal.org/Manual/latest/doc_html/cgal_manual/Segment_Delaunay_graph_2_ref/Class_Segment_Delaunay_graph_2.html
+- OpenVoronoi             https://github.com/aewallin/openvoronoi
+- Triangle? (Todo!)       http://www.cs.cmu.edu/~quake/triangle.html
+- QHull?    (Todo!)       http://www.qhull.org/
 
 Out-of-source build with cmake:
 $ git clone git://github.com/aewallin/voronoi-benchmark.git

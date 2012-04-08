@@ -36,20 +36,16 @@ typedef CGAL::Segment_Delaunay_graph_filtered_traits_2<CK, CGAL::Field_with_sqrt
 typedef CGAL::Segment_Delaunay_graph_2<Gt> SDT_CGAL;
 typedef SDT_CGAL::Point_2 Point_CGAL;
 
-
-const int RANDOM_SEED = 27;
-const int NUM_TESTS = 4;
-const int NUM_POINTS[] = {10, 100, 1000, 10000}; //, 100000, 1000000};
-const int NUM_RUNS[] = {100, 100, 10, 1, 1, 1};
-std::ofstream bf("benchmark_points.txt", std::ios_base::out | std::ios_base::app);
+std::ofstream bf("benchmark_points.csv", std::ios_base::out | std::ios_base::app);
 boost::timer timer;
 
 // print a row of results to the file
 void format_line(std::string lib_name, int num_points, int num_tests, double total_time, double time_per_test) {
-  bf << "| " << std::setw(16) << num_points << " ";
-  bf << "| " << std::setw(15) << num_tests << " ";
-  bf << "| " << std::setw(17) << time_per_test << " ";
-  bf << "|" << std::endl;
+  bf <<  lib_name << ",";
+  bf << num_points << ",";
+  bf << num_tests << ",";
+  bf << time_per_test << ",";
+  bf <<  std::endl;
     std::cout << "| " << std::setw(16) << lib_name << " ";
     std::cout << "| " << std::setw(16) << num_points << " ";
     std::cout << "| " << std::setw(15) << num_tests << " ";
@@ -59,9 +55,9 @@ void format_line(std::string lib_name, int num_points, int num_tests, double tot
     std::cout << "|" << std::endl << std::flush;
 }
 
-void run_boost_test() {
+void run_boost_test(int RANDOM_SEED, int NUM_TESTS, std::vector<int> NUM_POINTS, std::vector<int> NUM_RUNS) {
   boost::mt19937 gen(RANDOM_SEED);
-  bf << "Boost.Polygon Voronoi of Points:\n";
+  //bf << "Boost.Polygon Voronoi of Points:\n";
   for (int i = 0; i < NUM_TESTS; ++i) {
     timer.restart();
     for (int j = 0; j < NUM_RUNS[i]; ++j) {
@@ -76,13 +72,13 @@ void run_boost_test() {
     double time_per_test = total_time / NUM_RUNS[i];
     format_line("Boost.Polygon", NUM_POINTS[i], NUM_RUNS[i], total_time, time_per_test);
   }
-  bf << "\n";
+  //bf << "\n";
 }
 
 
-void run_cgal_test() {
+void run_cgal_test(int RANDOM_SEED, int NUM_TESTS, std::vector<int> NUM_POINTS, std::vector<int> NUM_RUNS) {
   boost::mt19937 gen(RANDOM_SEED);
-  bf << "CGAL Triangulation of Points:\n";
+  //bf << "CGAL Triangulation of Points:\n";
   for (int i = 0; i < NUM_TESTS; ++i) {
     timer.restart();
     for (int j = 0; j < NUM_RUNS[i]; ++j) {
@@ -95,18 +91,18 @@ void run_cgal_test() {
     double time_per_test = total_time / NUM_RUNS[i];
     format_line("CGAL", NUM_POINTS[i], NUM_RUNS[i], total_time, time_per_test);
   }
-  bf << "\n";
+  //bf << "\n";
 }
 
 #include <openvoronoi/voronoidiagram.hpp>
 #include <openvoronoi/version.hpp>
 
-void run_ovd_test() {
-  boost::mt19937 gen(RANDOM_SEED);
-      double minimum_coordinate = std::numeric_limits<uint32_t>::min();
-      double maximum_coordinate = std::numeric_limits<uint32_t>::max();
-    std::cout << "OpenVoronoi " << ovd::version() << " " << ovd::build_type() << "\n";
-  bf << "OpenVoronoi:\n";
+void run_ovd_test(int RANDOM_SEED, int NUM_TESTS, std::vector<int> NUM_POINTS, std::vector<int> NUM_RUNS) {
+    boost::mt19937 gen(RANDOM_SEED);
+    double minimum_coordinate = std::numeric_limits<uint32_t>::min();
+    double maximum_coordinate = std::numeric_limits<uint32_t>::max();
+    //std::cout << "OpenVoronoi " << ovd::version() << " " << ovd::build_type() << "\n";
+    //bf << "OpenVoronoi:\n";
   for (int i = 0; i < NUM_TESTS; ++i) {
     timer.restart();
     for (int j = 0; j < NUM_RUNS[i]; ++j) {
@@ -129,15 +125,31 @@ void run_ovd_test() {
     double time_per_test = total_time / NUM_RUNS[i];
     format_line("OpenVoronoi", NUM_POINTS[i], NUM_RUNS[i], total_time, time_per_test);
   }
-  bf << "\n";
+  //bf << "\n";
 }
 
 int main() {
-  bf << std::setiosflags(std::ios::right | std::ios::fixed) << std::setprecision(6);
-  run_ovd_test();
-  run_boost_test();
-  run_cgal_test();
-  
-  bf.close();
-  return 0;
+    const int RANDOM_SEED = 27;
+    const int max_exponent = 40;
+    std::vector<int> NUM_POINTS;
+    std::vector<int> NUM_RUNS;
+
+    for (int m=10;m<max_exponent;m++) {
+        NUM_POINTS.push_back( (int)( pow(2,0.5*m) ) ); // this nicely spaced points on log-axis
+        if (m<20)
+            NUM_RUNS.push_back(100);
+        else if (m<30)
+            NUM_RUNS.push_back(10);
+        else
+            NUM_RUNS.push_back(2);
+    }
+    int NUM_TESTS = NUM_POINTS.size();
+
+    bf << std::setiosflags(std::ios::right | std::ios::fixed) << std::setprecision(6);
+    run_ovd_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
+    run_boost_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
+    run_cgal_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
+
+    bf.close();
+    return 0;
 }

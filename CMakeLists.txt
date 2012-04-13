@@ -35,5 +35,5 @@ MESSAGE(STATUS " CMAKE_BUILD_TYPE  = " ${CMAKE_BUILD_TYPE})
 ADD_EXECUTABLE(bench_points bench_points.cpp)
 target_link_libraries(bench_points ${Boost_LIBRARIES}  ${OVD_LIBRARY}  ${QD_LIBRARY} )
 
-ADD_EXECUTABLE(bench_segs bench_segments.cpp)
-target_link_libraries(bench_segs ${Boost_LIBRARIES}  ${OVD_LIBRARY}  ${QD_LIBRARY} )
+#ADD_EXECUTABLE(bench_segs bench_segments.cpp)
+#target_link_libraries(bench_segs ${Boost_LIBRARIES}  ${OVD_LIBRARY}  ${QD_LIBRARY} )

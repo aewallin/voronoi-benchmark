@@ -101,7 +101,7 @@ void run_ovd_test(int RANDOM_SEED, int NUM_TESTS, std::vector<int> NUM_POINTS, s
     boost::mt19937 gen(RANDOM_SEED);
     double minimum_coordinate = std::numeric_limits<uint32_t>::min();
     double maximum_coordinate = std::numeric_limits<uint32_t>::max();
-    //std::cout << "OpenVoronoi " << ovd::version() << " " << ovd::build_type() << "\n";
+    std::cout << "OpenVoronoi " << ovd::version() << " " << ovd::build_type() << "\n";
     //bf << "OpenVoronoi:\n";
   for (int i = 0; i < NUM_TESTS; ++i) {
     timer.restart();
@@ -130,7 +130,7 @@ void run_ovd_test(int RANDOM_SEED, int NUM_TESTS, std::vector<int> NUM_POINTS, s
 
 int main() {
     const int RANDOM_SEED = 27;
-    const int max_exponent = 40;
+    const int max_exponent = 35;
     std::vector<int> NUM_POINTS;
     std::vector<int> NUM_RUNS;
 
@@ -147,7 +147,7 @@ int main() {
 
     bf << std::setiosflags(std::ios::right | std::ios::fixed) << std::setprecision(6);
     run_ovd_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
-    //run_boost_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
+    run_boost_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
     //run_cgal_test(RANDOM_SEED, NUM_TESTS, NUM_POINTS, NUM_RUNS);
 
     bf.close();
